@@ -22,5 +22,13 @@ public void buttonYalla(){
         return isElementPresent(By.xpath("//h2[@class='message']"));
 }
 
-
+public void submitOk(){
+   click(By.xpath("//button[@type='button']"));
+}
+public boolean isLogOut(){
+        return isElementPresent(By.xpath("//*[.=' Logout ']"));
+}
+public void logout(){
+        click(By.xpath("//*[.=' Logout ']"));
+}
     }
