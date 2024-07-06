@@ -29,7 +29,7 @@ public class HelperUser extends HelperBase {
     }
     public String getMessage1() {
         pause(1000);
-       WebElement string= wd.findElement(By.xpath("//h2[@class='message']"));
+       WebElement string= wd.findElement(By.xpath("//h1[@class='title']"));
        String message = string.getText();
         System.out.println(message);
        return message;
