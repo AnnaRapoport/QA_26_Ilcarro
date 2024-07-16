@@ -38,7 +38,7 @@ public class HelperUser extends HelperBase {
     }
     public String getMessage() {
         pause(10000);
-        return wd.findElement(By.className("message")).getText();
+        return wd.findElement(By.xpath("//h2[@class='message']")).getText();
         //        WebElement element = wd.findElement(By.cssSelector(".dialog-container>h2"));
 //                String text = element.getText();
 //                return text;

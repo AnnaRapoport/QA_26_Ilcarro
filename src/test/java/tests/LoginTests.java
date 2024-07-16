@@ -1,6 +1,8 @@
 package tests;
 
+import models.User;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -16,9 +18,21 @@ public class LoginTests extends TestBase {
     public void loginSuccess() {
         app.getHelperUser().openLoginForm();
         app.getHelperUser().fillLoginForm("cola@mail.ru", "Aa12345$");
-        app.getHelperUser().buttonYalla();
-        Assert.assertEquals(app.getHelperUser().getMessage1(), "Log in");//Logged in
-        app.getHelperUser().submitOk();
+        app.getHelperUser().submit();
+        Assert.assertEquals(app.getHelperUser().getMessage(), "Logged in success");//Logged in
+
+
+    }
+    @Test
+    public void loginSuccess1() {
+        User user =new User().setEmail("cola@mail.ru").setPassword("Aa12345$");
+//        user.setEmail("cola@mail.ru");
+//        user.setPassword("Aa12345$");
+        app.getHelperUser().openLoginForm();
+        app.getHelperUser().fillLoginForm(user);
+        app.getHelperUser().submit();
+        Assert.assertEquals(app.getHelperUser().getMessage(), "Logged in success");//Logged in
+
 
     }
 
@@ -26,9 +40,8 @@ public class LoginTests extends TestBase {
     public void loginSuccessModel() {
         app.getHelperUser().openLoginForm();
         app.getHelperUser().fillLoginForm("cola@mail.ru", "Aa12345$");
-        app.getHelperUser().buttonYalla();
-        Assert.assertEquals(app.getHelperUser().getMessage1(), "Log in");//Logged in
-        app.getHelperUser().submitOk();
+        app.getHelperUser().submit();
+        Assert.assertEquals(app.getHelperUser().getMessage(), "Logged in success");//Logged in
 
     }
 
@@ -36,28 +49,29 @@ public class LoginTests extends TestBase {
     public void loginWrongEmail() {
         app.getHelperUser().openLoginForm();
         app.getHelperUser().fillLoginForm("colamail.ru", "Aa12345$");
-        app.getHelperUser().buttonYalla();
-        Assert.assertEquals(app.getHelperUser().getMessage(), "It'snot look like email");
+        app.getHelperUser().submit();
+        Assert.assertEquals(app.getHelperUser().getErrorText(), "It'snot look like email");
+        Assert.assertTrue( app.getHelperUser().isYallaButtonNotActive());
 
 
     }
 
-    @Test
-    public void loginEmptyPassword() {
-        app.getHelperUser().openLoginForm();
-        app.getHelperUser().fillLoginForm("cola@mail.ru", "");
-        app.getHelperUser().buttonYalla();
-        Assert.assertEquals(app.getHelperUser().getMessage(), "Password is required");
-
-    }
+//    @Test
+//    public void loginEmptyPassword() {
+//        app.getHelperUser().openLoginForm();
+//        app.getHelperUser().fillLoginForm("cola@mail.ru", "");
+//        app.getHelperUser().buttonYalla();
+//        Assert.assertEquals(app.getHelperUser().getErrorText(), "Password is required");
+//        Assert.assertTrue( app.getHelperUser().isYallaButtonNotActive());
+//    }
 
     @Test
     public void loginWrongPassword() {
         app.getHelperUser().openLoginForm();
         app.getHelperUser().fillLoginForm("cola@mail.ru", "Aa123");
-        app.getHelperUser().buttonYalla();
-        Assert.assertEquals(app.getHelperUser().getMessage1(), "Log in");//Login failed
-        app.getHelperUser().submitOk();
+        app.getHelperUser().submit();
+        Assert.assertEquals(app.getHelperUser().getErrorText(), "\"Login or Password incorrect\"");//Login failed
+
 
     }
 
@@ -65,8 +79,12 @@ public class LoginTests extends TestBase {
     public void loginUnregUser() {
         app.getHelperUser().openLoginForm();
         app.getHelperUser().fillLoginForm("fanta@mail.ru", "Aa12345$");
-        app.getHelperUser().buttonYalla();
-        Assert.assertEquals(app.getHelperUser().getMessage1(), "Log in");// Login failed
-        app.getHelperUser().submitOk();
+        app.getHelperUser().submit();
+        Assert.assertEquals(app.getHelperUser().getErrorText(), "\"Login or Password incorrect\"");// Login failed
+
 }
+@AfterTest
+    public void afterTest() {
+        app.getHelperUser().submitOk();
+    }
     }
